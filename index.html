@@ -2,17 +2,16 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <!-- === 社群預覽標籤 (Meta Tags) 開始 === -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- === 社群預覽標籤 === -->
     <title>Lumina Journey</title>
     <meta name="description" content="專屬你的極簡牌卡日記。結合霍金斯能量頻率、月相與節氣，紀錄每一次的靈感與覺察。">
-    
-    <!-- 給 LINE, Facebook, IG 等社群軟體看的設定 -->
     <meta property="og:title" content="Lumina Journey | 心靈牌卡日記">
     <meta property="og:description" content="專屬你的極簡牌卡日記。結合霍金斯能量頻率、月相與節氣，溫柔地紀錄每一次的靈感與覺察。">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Lumina Journey">
-    <!-- === 社群預覽標籤 (Meta Tags) 結束 === -->
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&display=swap');
@@ -31,6 +30,7 @@
             margin: 0; padding: 0;
             overscroll-behavior-y: contain;
             min-height: 100vh;
+            line-height: 1.6; 
         }
 
         .safe-pt { padding-top: calc(1.5rem + var(--safe-top)); }
@@ -49,26 +49,27 @@
         }
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            70% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
             100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
 
         .page-transition { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-btn { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #BBB; transition: 0.3s; position: relative; }
+        .nav-btn { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #BBB; transition: 0.3s; position: relative; padding: 0.5rem; }
+        @media (min-width: 768px) { .nav-btn { font-size: 14px; letter-spacing: 0.2em; } }
         .nav-btn.active { color: var(--gold); font-weight: bold; }
-        .nav-btn.active::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 100%; height: 1px; background: var(--gold); }
+        .nav-btn.active::after { content: ''; position: absolute; bottom: 0px; left: 10%; width: 80%; height: 1px; background: var(--gold); }
 
-        /* 卡片設計 */
+        /* 卡片設計自適應 */
         .card-container { perspective: 1200px; width: 240px; height: 360px; }
+        @media (min-width: 768px) { .card-container { width: 300px; height: 450px; } }
         .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; }
         .card-inner.is-flipped { transform: rotateY(180deg); }
         .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .card-back { background: linear-gradient(135deg, #fff, #fefaf0); z-index: 2; }
         .card-front { background: white; transform: rotateY(180deg); }
 
-        /* 霍金斯金線調頻滑桿 */
         .golden-slider {
             -webkit-appearance: none;
             width: 100%;
@@ -80,8 +81,8 @@
         .golden-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: #FFFFFF;
             border: 1.5px solid var(--gold);
@@ -94,10 +95,9 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
         }
 
-        /* 能量視覺特效 (純淨背景) */
         .aura-high-row {
             background: linear-gradient(to right, rgba(212, 175, 55, 0.05), transparent 80%);
-            border-left: 2px solid var(--gold) !important;
+            border-left: 3px solid var(--gold) !important;
             border-radius: 0 12px 12px 0;
         }
         .aura-low-img {
@@ -105,79 +105,84 @@
             border-color: #E5E5E5;
         }
 
-        .tag-chip { font-size: 9px; padding: 2px 8px; border: 0.5px solid var(--gold); border-radius: 20px; color: var(--gold); letter-spacing: 1px; display: inline-block; margin: 2px; }
-        .tag-filter { font-size: 10px; padding: 6px 14px; border: 1px solid #EEE; border-radius: 20px; cursor: pointer; transition: 0.3s; color: #AAA; display: flex; align-items: center; }
+        .tag-chip { font-size: 11px; padding: 4px 10px; border: 0.5px solid var(--gold); border-radius: 20px; color: var(--gold); letter-spacing: 1px; display: inline-block; margin: 3px; }
+        @media (min-width: 768px) { .tag-chip { font-size: 12px; } }
+        .tag-filter { font-size: 12px; padding: 8px 16px; border: 1px solid #EEE; border-radius: 20px; cursor: pointer; transition: 0.3s; color: #AAA; display: flex; align-items: center; }
+        @media (min-width: 768px) { .tag-filter { font-size: 14px; } }
         .tag-filter.active { background: var(--gold); color: white; border-color: var(--gold); }
 
-        .input-gold { width: 100%; padding: 12px; border-bottom: 1px solid #EEE; outline: none; background: transparent; font-size: 13px; text-align: left; }
+        /* 防 iOS 放大 */
+        .input-gold { width: 100%; padding: 16px; border-bottom: 1px solid #EEE; outline: none; background: transparent; font-size: 16px; text-align: left; transition: 0.3s; }
         .input-gold:focus { border-bottom-color: var(--gold); }
 
         .glass-modal { position: fixed; inset: 0; background: rgba(255,255,255,0.98); z-index: 100; display: flex; flex-direction: column; align-items: center; padding-top: var(--safe-top); overflow-y: auto; }
         
         ::-webkit-scrollbar { display: none; }
         
-        .filter-scroll-container { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 4px; width: 100%; align-items: center; scrollbar-width: none; }
+        .filter-scroll-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 6px; width: 100%; align-items: center; scrollbar-width: none; }
         .filter-scroll-container::-webkit-scrollbar { display: none; }
         
-        .toggle-switch { position: relative; width: 36px; height: 18px; background: #EEE; border-radius: 20px; transition: 0.3s; }
+        .toggle-switch { position: relative; width: 44px; height: 22px; background: #EEE; border-radius: 20px; transition: 0.3s; }
         .toggle-switch.on { background: var(--gold); }
-        .toggle-knob { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: white; border-radius: 50%; transition: 0.3s; }
-        .toggle-switch.on .toggle-knob { left: 20px; }
+        .toggle-knob { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: 0.3s; }
+        .toggle-switch.on .toggle-knob { left: 25px; }
     </style>
 </head>
 <body class="flex flex-col items-center">
 
     <canvas id="sparkle-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
 
-    <header class="safe-pt pb-4 text-center w-full">
-        <!-- 點擊標題回首頁 -->
-        <h1 onclick="goHome()" class="text-xl tracking-[0.4em] gold-text font-bold cursor-pointer hover:opacity-80 transition active:scale-95 uppercase">LUMINA JOURNEY</h1>
-        <p id="nature-status" class="text-[7px] tracking-[0.6em] mt-1 opacity-40 uppercase"></p>
+    <header class="safe-pt pb-6 text-center w-full">
+        <h1 onclick="goHome()" class="text-2xl md:text-3xl tracking-[0.4em] gold-text font-bold cursor-pointer hover:opacity-80 transition active:scale-95 uppercase">LUMINA JOURNEY</h1>
+        <p id="nature-status" class="text-[10px] md:text-xs tracking-[0.6em] mt-2 opacity-40 uppercase"></p>
     </header>
 
-    <nav class="flex justify-center space-x-8 mb-6 w-full z-10">
+    <nav class="flex justify-center space-x-6 md:space-x-12 mb-8 w-full z-10">
         <button onclick="switchTab('draw')" id="nav-draw" class="nav-btn active">今日</button>
         <button onclick="switchTab('decks')" id="nav-decks" class="nav-btn">牌組庫</button>
         <button onclick="switchTab('history')" id="nav-history" class="nav-btn">紀錄</button>
         <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn">設定</button>
     </nav>
 
-    <main class="w-full max-w-md px-6 flex-grow overflow-y-auto pb-24">
+    <main class="w-full max-w-md md:max-w-2xl px-6 flex-grow overflow-y-auto pb-24">
         
         <!-- === 抽牌區 === -->
         <section id="tab-draw" class="page-transition flex flex-col items-center">
             
-            <div id="draw-ready-view" class="flex flex-col items-center mt-12 w-full">
-                <p id="current-deck-name-display" class="text-[10px] gold-text tracking-[0.2em] mb-4 uppercase opacity-60">使用中：無</p>
-                <button onclick="startDrawRitual()" id="main-draw-btn" class="btn-draw-main w-28 h-28 rounded-full text-xs font-bold tracking-widest flex items-center justify-center transition-transform active:scale-90">
+            <div id="draw-empty-state" class="flex flex-col items-center mt-16 md:mt-24 w-full text-center hidden">
+                <!-- 內容動態寫入 -->
+            </div>
+
+            <div id="draw-ready-view" class="flex flex-col items-center mt-12 md:mt-20 w-full hidden">
+                <p id="current-deck-name-display" class="text-xs md:text-sm gold-text tracking-[0.2em] mb-6 md:mb-8 uppercase opacity-60">使用中：無</p>
+                <button onclick="startDrawRitual()" id="main-draw-btn" class="btn-draw-main w-32 h-32 md:w-40 md:h-40 rounded-full text-sm md:text-base font-bold tracking-widest flex items-center justify-center transition-transform active:scale-90">
                     抽牌
                 </button>
                 
-                <div class="flex space-x-8 mt-10">
-                    <button onclick="openManualSelectModal()" class="text-[9px] opacity-40 underline tracking-widest uppercase hover:opacity-100 transition">自行選牌</button>
-                    <button onclick="showDeckSwitcher()" class="text-[9px] opacity-40 underline tracking-widest uppercase hover:opacity-100 transition">切換牌組</button>
+                <div class="flex space-x-10 mt-12 md:mt-16">
+                    <button onclick="openManualSelectModal()" class="text-xs md:text-sm opacity-50 underline tracking-widest uppercase hover:opacity-100 hover:text-gold transition p-2">自行選牌</button>
+                    <button onclick="showDeckSwitcher()" class="text-xs md:text-sm opacity-50 underline tracking-widest uppercase hover:opacity-100 hover:text-gold transition p-2">切換牌組</button>
                 </div>
             </div>
 
             <div id="active-draw-area" class="hidden w-full flex flex-col items-center">
-                <div class="card-container mb-8">
+                <div class="card-container mb-10">
                     <div id="main-card" class="card-inner">
-                        <div class="card-back"><div class="opacity-10 text-2xl">✧</div></div>
+                        <div class="card-back"><div class="opacity-10 text-4xl">✧</div></div>
                         <div class="card-front"><img id="drawn-img" src="" class="w-full h-full object-cover"></div>
                     </div>
                 </div>
-                <div id="journal-form" class="w-full opacity-0 translate-y-4 transition-all duration-1000">
-                    <h2 id="drawn-name" class="text-center italic text-lg gold-text mb-4">牌名</h2>
+                <div id="journal-form" class="w-full opacity-0 translate-y-4 transition-all duration-1000 max-w-lg">
+                    <h2 id="drawn-name" class="text-center italic text-xl md:text-2xl gold-text mb-6">牌名</h2>
                     
-                    <!-- 霍金斯能量調頻器 -->
-                    <div class="w-full px-2 mb-8">
-                        <div class="flex justify-between items-end mb-4">
-                            <span class="text-[9px] opacity-40 uppercase tracking-widest">能量共振頻率</span>
-                            <span id="hawkins-display" class="gold-text text-sm font-bold tracking-widest transition-all">200 勇氣</span>
+                    <div class="w-full px-2 mb-10">
+                        <div class="flex justify-between items-end mb-5">
+                            <span class="text-xs md:text-sm opacity-50 uppercase tracking-widest">能量共振頻率</span>
+                            <span id="hawkins-display" class="gold-text text-base md:text-lg font-bold tracking-widest transition-all">200 勇氣</span>
                         </div>
                         <div class="relative pt-2 pb-2">
                             <input type="range" id="hawkins-slider" min="0" max="16" value="8" class="golden-slider" oninput="updateHawkinsDisplay()">
-                            <div class="flex justify-between mt-3 text-[7px] opacity-30 tracking-widest">
+                            <div class="flex justify-between mt-4 text-[10px] md:text-xs opacity-40 tracking-widest">
                                 <span>收縮</span>
                                 <span>臨界</span>
                                 <span>擴張</span>
@@ -185,14 +190,18 @@
                         </div>
                     </div>
 
-                    <textarea id="diary-text" rows="4" class="w-full p-4 bg-stone-50 border-none rounded-xl text-sm focus:ring-1 focus:ring-gold mb-4" placeholder="記錄下此刻的頻率與靈感..."></textarea>
-                    <input type="text" id="tag-input" placeholder="標籤 (以空格分隔)" class="input-gold text-[11px] mb-6">
-                    <div class="flex space-x-3">
-                        <button onclick="askAI()" class="flex-1 py-3 border border-gold gold-text rounded-full text-[10px] tracking-widest uppercase hover:bg-stone-50 transition">AI 啟讀</button>
-                        <button onclick="saveEntry()" class="flex-1 py-3 gold-bg text-white rounded-full text-[10px] tracking-widest uppercase shadow-lg hover:opacity-90 transition">儲存</button>
+                    <textarea id="diary-text" rows="5" class="w-full p-5 bg-stone-50 border-none rounded-xl text-base focus:ring-1 focus:ring-gold mb-5 leading-loose" placeholder="記錄下此刻的頻率與靈感..."></textarea>
+                    <input type="text" id="tag-input" placeholder="標籤 (以空格分隔)" class="input-gold mb-8">
+                    
+                    <div class="flex space-x-4">
+                        <button onclick="askAI()" class="flex-1 py-4 border border-gold gold-text rounded-full text-xs md:text-sm tracking-widest uppercase hover:bg-stone-50 transition">AI 啟讀</button>
+                        <button onclick="saveEntry()" class="flex-1 py-4 gold-bg text-white rounded-full text-xs md:text-sm tracking-widest uppercase shadow-lg hover:opacity-90 transition">儲存</button>
                     </div>
-                    <p id="ai-response" class="mt-4 text-[10px] text-gray-400 italic text-center px-4 leading-relaxed"></p>
-                    <button onclick="cancelDraw()" class="w-full mt-6 text-[9px] opacity-20 underline uppercase tracking-widest hover:opacity-80 transition">返回首頁</button>
+                    <p id="ai-response" class="mt-6 text-xs md:text-sm text-gray-500 italic text-center px-4 leading-loose"></p>
+                    
+                    <div class="text-center mt-10">
+                        <button onclick="cancelDraw()" class="text-xs md:text-sm opacity-30 underline uppercase tracking-widest hover:opacity-80 transition p-2">返回首頁</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -200,70 +209,101 @@
         <!-- === 牌組庫 === -->
         <section id="tab-decks" class="hidden page-transition">
             <div id="deck-list-view">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xs gold-text font-bold tracking-widest uppercase">牌組庫</h3>
-                    <button onclick="showCreateDeck()" class="text-[10px] underline opacity-40 hover:opacity-80 transition">＋ 新增牌組</button>
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-sm md:text-base gold-text font-bold tracking-widest uppercase">牌組庫</h3>
+                    <button onclick="showCreateDeck()" class="text-xs md:text-sm underline opacity-50 hover:opacity-100 hover:text-gold transition p-2">＋ 新增牌組</button>
                 </div>
                 <div id="decks-container" class="space-y-4"></div>
             </div>
 
             <div id="deck-detail-view" class="hidden">
-                <button onclick="hideDeckDetail()" class="text-[10px] opacity-30 mb-4 uppercase hover:opacity-80 transition">← 返回列表</button>
-                <div class="flex justify-between items-end mb-8 border-b border-stone-100 pb-4">
+                <button onclick="hideDeckDetail()" class="text-xs opacity-40 mb-6 uppercase hover:opacity-100 transition p-1">← 返回列表</button>
+                <div class="flex justify-between items-end mb-10 border-b border-stone-100 pb-6">
                     <div>
-                        <h2 id="current-deck-title" class="text-xl gold-text italic mb-1">牌組</h2>
-                        <button onclick="editCurrentDeck()" class="text-[9px] opacity-40 underline hover:opacity-80 transition">修改牌組名稱</button>
+                        <h2 id="current-deck-title" class="text-2xl gold-text italic mb-2">牌組</h2>
+                        <button onclick="editCurrentDeck()" class="text-[11px] md:text-xs opacity-50 underline hover:opacity-100 transition">修改牌組名稱</button>
                     </div>
-                    <div class="flex flex-col items-end space-y-2">
-                        <button onclick="uploadSingleCard()" class="px-4 py-2 gold-bg text-white rounded-full text-[10px] tracking-widest shadow-md active:scale-95 transition hover:opacity-90">
+                    <div class="flex flex-col items-end space-y-3">
+                        <button onclick="uploadSingleCard()" class="px-5 py-2.5 gold-bg text-white rounded-full text-xs md:text-sm tracking-widest shadow-md active:scale-95 transition hover:opacity-90">
                             ＋ 新增牌卡
                         </button>
-                        <button onclick="document.getElementById('batch-upload').click()" class="text-[9px] gold-text underline opacity-60 hover:opacity-100 transition">
+                        <button onclick="document.getElementById('batch-upload').click()" class="text-[11px] md:text-xs gold-text underline opacity-70 hover:opacity-100 transition">
                             或批次匯入
                         </button>
                         <input type="file" id="batch-upload" class="hidden" accept="image/*" multiple onchange="handleBatchUpload(this)">
                     </div>
                 </div>
-                <div id="cards-container" class="grid grid-cols-2 gap-4"></div>
-                <button onclick="deleteCurrentDeck()" class="w-full mt-20 py-4 text-[9px] text-red-300 opacity-50 uppercase tracking-widest hover:opacity-100 transition">移除整個牌組</button>
+                <div id="cards-container" class="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-6"></div>
+                <button onclick="deleteCurrentDeck()" class="w-full mt-24 py-5 text-xs text-red-400 opacity-60 uppercase tracking-widest hover:opacity-100 hover:bg-red-50 rounded-xl transition">移除整個牌組</button>
             </div>
         </section>
 
         <!-- === 歷史紀錄 === -->
         <section id="tab-history" class="hidden page-transition">
-            <div id="tag-cloud" class="mb-8 w-full border-b border-stone-100 pb-4"></div>
-            <div id="history-list" class="space-y-6"></div>
+            
+            <div id="history-main-view">
+                <div id="tag-cloud" class="mb-10 w-full border-b border-stone-100 pb-6"></div>
+                <div id="history-list" class="space-y-8 md:space-y-10"></div>
+            </div>
+
+            <div id="history-edit-view" class="hidden w-full flex-col items-center max-w-lg mx-auto">
+                <div class="w-full flex justify-between items-center mb-8 border-b border-stone-100 pb-4">
+                    <h3 class="text-sm md:text-base gold-text font-bold tracking-widest uppercase">修改紀錄</h3>
+                    <button onclick="cancelEditHistory()" class="text-xs opacity-40 hover:opacity-100 transition p-1">✕ 取消</button>
+                </div>
+                
+                <img id="edit-card-img" src="" class="w-32 md:w-40 aspect-[2/3] object-cover rounded-xl gold-border shadow-sm mb-4">
+                <p id="edit-card-name" class="text-sm md:text-base gold-text font-bold mb-10 tracking-wide"></p>
+
+                <div class="w-full px-2 mb-10">
+                    <div class="flex justify-between items-end mb-5">
+                        <span class="text-xs md:text-sm opacity-50 uppercase tracking-widest">能量共振頻率</span>
+                        <span id="edit-hawkins-display" class="gold-text text-base md:text-lg font-bold tracking-widest transition-all"></span>
+                    </div>
+                    <div class="relative pt-2 pb-2">
+                        <input type="range" id="edit-hawkins-slider" min="0" max="16" class="golden-slider" oninput="updateEditHawkinsDisplay()">
+                        <div class="flex justify-between mt-4 text-[10px] md:text-xs opacity-40 tracking-widest">
+                            <span>收縮</span><span>臨界</span><span>擴張</span>
+                        </div>
+                    </div>
+                </div>
+
+                <textarea id="edit-diary-text" rows="5" class="w-full p-5 bg-stone-50 border-none rounded-xl text-base focus:ring-1 focus:ring-gold mb-5 leading-loose" placeholder="更新您的靈感..."></textarea>
+                <input type="text" id="edit-tag-input" placeholder="標籤 (以空格分隔)" class="input-gold mb-10">
+                
+                <button onclick="saveEditHistory()" class="w-full py-4 gold-bg text-white rounded-full text-xs md:text-sm tracking-widest uppercase shadow-lg hover:opacity-90 transition active:scale-95">儲存修改</button>
+            </div>
+
         </section>
 
         <!-- === 設定區 === -->
-        <section id="tab-settings" class="hidden page-transition space-y-6">
-            <h3 class="text-xs gold-text font-bold tracking-widest uppercase mb-4">偏好設定</h3>
+        <section id="tab-settings" class="hidden page-transition space-y-8">
+            <h3 class="text-sm md:text-base gold-text font-bold tracking-widest uppercase mb-6">偏好設定</h3>
             
-            <!-- 【新增：AI 金鑰輸入區】 -->
-            <div class="flex flex-col p-4 bg-stone-50 rounded-xl space-y-3">
+            <div class="flex flex-col p-6 bg-stone-50 rounded-2xl space-y-4">
                 <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold">AI 導師金鑰 (API Key)</span>
-                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[9px] gold-text underline">免費獲取</a>
+                    <span class="text-sm md:text-base font-bold">AI 導師金鑰 (API Key)</span>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs md:text-sm gold-text underline p-1">免費獲取</a>
                 </div>
-                <p class="text-[9px] opacity-50 leading-relaxed">請輸入你的專屬 Gemini API Key 以啟用智能解讀功能。金鑰將安全地儲存在你的本機裝置中。</p>
-                <div class="flex items-center space-x-2 mt-2">
-                    <input type="password" id="api-key-setting" class="flex-grow bg-white border border-stone-200 rounded p-2 text-[10px] outline-none focus:border-gold" placeholder="輸入金鑰 (AIzaSy...)">
-                    <button onclick="saveApiKeySetting()" class="gold-bg text-white px-3 py-2 rounded text-[10px] whitespace-nowrap hover:opacity-90 transition">儲存</button>
+                <p class="text-xs opacity-60 leading-relaxed">請輸入您的專屬 Gemini API Key 以啟用智能解讀功能。金鑰將安全地儲存於本機裝置中。</p>
+                <div class="flex items-center space-x-3 mt-4">
+                    <input type="password" id="api-key-setting" class="flex-grow bg-white border border-stone-200 rounded-lg p-3 text-sm md:text-base outline-none focus:border-gold transition" placeholder="輸入金鑰 (AIzaSy...)">
+                    <button onclick="saveApiKeySetting()" class="gold-bg text-white px-5 py-3 rounded-lg text-sm whitespace-nowrap hover:opacity-90 transition shadow-sm">儲存</button>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between p-4 bg-stone-50 rounded-xl mt-4">
-                <span class="text-xs font-bold">紀錄當前月相</span>
+            <div class="flex items-center justify-between p-6 bg-stone-50 rounded-2xl mt-6">
+                <span class="text-sm md:text-base font-bold">紀錄當前月相</span>
                 <div onclick="toggleSetting('showLunar')" id="set-lunar" class="toggle-switch cursor-pointer"><div class="toggle-knob"></div></div>
             </div>
-            <div class="flex items-center justify-between p-4 bg-stone-50 rounded-xl">
-                <span class="text-xs font-bold">紀錄當前節氣</span>
+            <div class="flex items-center justify-between p-6 bg-stone-50 rounded-2xl">
+                <span class="text-sm md:text-base font-bold">紀錄當前節氣</span>
                 <div onclick="toggleSetting('showSolar')" id="set-solar" class="toggle-switch cursor-pointer"><div class="toggle-knob"></div></div>
             </div>
 
-            <div class="pt-10 border-t border-stone-50 text-center space-y-6">
-                <button onclick="exportFullData()" class="text-[10px] gold-text underline uppercase block w-full hover:opacity-80 transition">備份資料庫 (.JSON)</button>
-                <button onclick="document.getElementById('import-full-file').click()" class="text-[10px] opacity-40 underline uppercase block w-full hover:opacity-80 transition">還原資料庫</button>
+            <div class="pt-12 border-t border-stone-100 text-center space-y-8">
+                <button onclick="exportFullData()" class="text-xs md:text-sm gold-text underline uppercase block w-full hover:opacity-80 transition p-2">備份資料庫 (.JSON)</button>
+                <button onclick="document.getElementById('import-full-file').click()" class="text-xs md:text-sm opacity-40 underline uppercase block w-full hover:opacity-80 transition p-2">還原資料庫</button>
                 <input type="file" id="import-full-file" class="hidden" accept=".json" onchange="importFullData(this)">
             </div>
         </section>
@@ -272,15 +312,15 @@
 
     <!-- Modal 系統 -->
     <div id="modal-overlay" class="glass-modal hidden">
-        <div id="loading-spinner" class="hidden absolute inset-0 bg-white/80 flex items-center justify-center z-[110]">
-            <p class="gold-text animate-pulse text-xs tracking-widest">魔法處理中...</p>
+        <div id="loading-spinner" class="hidden absolute inset-0 bg-white/90 flex items-center justify-center z-[110]">
+            <p class="gold-text animate-pulse text-sm tracking-widest font-bold">魔法處理中...</p>
         </div>
-        <div class="w-full max-w-xs space-y-8 mt-20 px-4">
-            <h3 id="modal-title" class="text-center gold-text tracking-widest uppercase text-xs">標題</h3>
+        <div class="w-full max-w-md md:max-w-xl space-y-8 mt-24 px-6">
+            <h3 id="modal-title" class="text-center gold-text tracking-widest uppercase text-sm md:text-base font-bold">標題</h3>
             <div id="modal-content" class="w-full"></div>
-            <div class="flex space-x-4 w-full">
-                <button id="modal-cancel" onclick="closeModal()" class="flex-1 py-3 text-[10px] border border-stone-200 rounded-full opacity-50 uppercase hover:opacity-80 transition">取消</button>
-                <button id="modal-confirm" class="flex-1 py-3 gold-bg text-white rounded-full text-[10px] tracking-widest uppercase shadow-md hover:opacity-90 transition">確定</button>
+            <div class="flex space-x-4 w-full pt-4">
+                <button id="modal-cancel" onclick="closeModal()" class="flex-1 py-4 text-xs md:text-sm border border-stone-200 rounded-full opacity-60 uppercase hover:bg-stone-50 transition">取消</button>
+                <button id="modal-confirm" class="flex-1 py-4 gold-bg text-white rounded-full text-xs md:text-sm tracking-widest uppercase shadow-md hover:opacity-90 transition">確定</button>
             </div>
         </div>
     </div>
@@ -296,7 +336,8 @@
             { v: 600, l: "平和" }, { v: 700, l: "開悟" }
         ];
 
-        let activeHawkins = hawkinsScale[8]; // Default 200
+        let activeHawkins = hawkinsScale[8]; 
+        let activeEditHawkins = hawkinsScale[8];
 
         function updateHawkinsDisplay() {
             const slider = document.getElementById('hawkins-slider');
@@ -304,13 +345,18 @@
             const display = document.getElementById('hawkins-display');
             display.innerText = `${activeHawkins.v} ${activeHawkins.l}`;
             
-            if (activeHawkins.v < 200) {
-                display.className = "text-stone-400 text-sm font-bold tracking-widest transition-all";
-            } else if (activeHawkins.v >= 500) {
-                display.className = "gold-text text-sm font-bold tracking-widest transition-all";
-            } else {
-                display.className = "gold-text text-sm font-bold tracking-widest transition-all";
-            }
+            if (activeHawkins.v < 200) display.className = "text-stone-400 text-base md:text-lg font-bold tracking-widest transition-all";
+            else display.className = "gold-text text-base md:text-lg font-bold tracking-widest transition-all";
+        }
+
+        function updateEditHawkinsDisplay() {
+            const slider = document.getElementById('edit-hawkins-slider');
+            activeEditHawkins = hawkinsScale[slider.value];
+            const display = document.getElementById('edit-hawkins-display');
+            display.innerText = `${activeEditHawkins.v} ${activeEditHawkins.l}`;
+            
+            if (activeEditHawkins.v < 200) display.className = "text-stone-400 text-base md:text-lg font-bold tracking-widest transition-all";
+            else display.className = "gold-text text-base md:text-lg font-bold tracking-widest transition-all";
         }
 
         // --- 1. Astronomy Logic ---
@@ -332,11 +378,9 @@
             return solarTerms[23];
         }
 
-        // --- 2. State, DB & API Key ---
-        let db, currentDeckId = null, activeCard = null, currentFilter = { type: 'All', value: 'All' }, editingJournalId = null;
+        // --- 2. State & DB ---
+        let db, currentDeckId = null, activeCard = null, currentFilter = { type: 'All', value: 'All' }, currentEditId = null;
         let settings = JSON.parse(localStorage.getItem('lumina_settings') || '{"showLunar":true,"showSolar":true}');
-        
-        // 讀取存在本地的 API Key
         let userApiKey = localStorage.getItem('lumina_api_key') || "";
 
         const request = indexedDB.open("LuminaJourneyDB_v1", 1);
@@ -348,14 +392,63 @@
         request.onsuccess = e => { db = e.target.result; init(); };
 
         async function init() {
-            // 初始化 API Key 欄位
             if(userApiKey) document.getElementById('api-key-setting').value = userApiKey;
-            
             await ensureDefaultDeck();
             renderDecks();
             updateSettingsUI();
             updateNatureIndicator();
             switchTab('draw');
+
+            // 【溫柔的守護提醒】延遲 1.5 秒後執行，避免打斷開場體驗
+            setTimeout(checkBackupReminder, 1500);
+        }
+
+        // 【全新】備份守護機制核心
+        function checkBackupReminder() {
+            const history = JSON.parse(localStorage.getItem('lumina_history') || '[]');
+            if (history.length === 0) return; // 沒有資料就不需提醒
+
+            let lastBackup = localStorage.getItem('lumina_last_backup');
+            
+            if (!lastBackup) {
+                // 第一次有資料但沒備份過，賦予當下時間作為基準點
+                localStorage.setItem('lumina_last_backup', Date.now());
+                return;
+            }
+
+            // 計算距離上次備份或提醒經過了幾天
+            const daysSince = (Date.now() - parseInt(lastBackup)) / (1000 * 60 * 60 * 24);
+            
+            if (daysSince >= 7) {
+                showBackupReminderModal();
+            }
+        }
+
+        function showBackupReminderModal() {
+            document.getElementById('modal-title').innerText = "靈感守護提醒";
+            document.getElementById('modal-content').innerHTML = `
+                <div class='text-4xl gold-text mb-4 opacity-60 text-center'>✧</div>
+                <p class='text-center text-sm md:text-base opacity-60 leading-loose'>為了保護您珍貴的靈感軌跡，<br>建議您定期將資料庫備份至本機。<br><br>距離上次備份已超過 7 天，<br>是否現在進行備份？</p>
+            `;
+            
+            const confirmBtn = document.getElementById('modal-confirm');
+            const cancelBtn = document.getElementById('modal-cancel');
+            
+            confirmBtn.innerText = "一鍵備份";
+            confirmBtn.onclick = () => {
+                exportFullData(); // 這裡面會自動重置時間
+                closeModal();
+            };
+            confirmBtn.classList.remove('hidden');
+            
+            cancelBtn.innerText = "稍後再說";
+            cancelBtn.onclick = () => {
+                // 點擊稍後再說，將時間重置為 4 天前（等於再過 3 天就會再次提醒）
+                localStorage.setItem('lumina_last_backup', Date.now() - (4 * 24 * 60 * 60 * 1000));
+                closeModal();
+            };
+            
+            document.getElementById('modal-overlay').classList.remove('hidden');
         }
 
         function saveApiKeySetting() {
@@ -381,8 +474,13 @@
             document.querySelectorAll('nav > button').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${t}`).classList.remove('hidden');
             document.getElementById(`nav-${t}`).classList.add('active');
-            if(t==='history') { currentFilter = { type: 'All', value: 'All' }; renderHistory(); }
-            if(t==='draw') updateDrawHeader();
+            
+            if(t==='history') { 
+                currentFilter = { type: 'All', value: 'All' }; 
+                cancelEditHistory(); 
+                renderHistory(); 
+            }
+            if(t==='draw') updateDrawView();
         }
 
         function goHome() {
@@ -391,12 +489,51 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        async function updateDrawHeader() {
-            const deckId = localStorage.getItem('lumina_default_deck');
-            const display = document.getElementById('current-deck-name-display');
-            if (!deckId) { display.innerText = "請先建立牌組庫"; return; }
-            const deck = await new Promise(r => db.transaction("decks").objectStore("decks").get(Number(deckId)).onsuccess = e => r(e.target.result));
-            display.innerText = deck ? `使用中：${deck.title}` : "請選取牌組";
+        async function updateDrawView() {
+            const decks = await new Promise(r => db.transaction("decks").objectStore("decks").getAll().onsuccess = e => r(e.target.result));
+            const cards = await new Promise(r => db.transaction("cards").objectStore("cards").getAll().onsuccess = e => r(e.target.result));
+
+            const emptyState = document.getElementById('draw-empty-state');
+            const readyView = document.getElementById('draw-ready-view');
+            const activeArea = document.getElementById('active-draw-area');
+
+            activeArea.classList.add('hidden');
+            document.getElementById('main-card').classList.remove('is-flipped');
+            document.getElementById('journal-form').classList.add('opacity-0', 'translate-y-4');
+
+            if (decks.length === 0) {
+                emptyState.innerHTML = `
+                    <div class="text-4xl gold-text mb-5 opacity-60">✧</div>
+                    <h2 class="text-2xl md:text-3xl gold-text italic mb-6 tracking-wide">歡迎來到 Lumina Journey</h2>
+                    <p class="text-sm md:text-base opacity-50 mb-10 leading-loose max-w-xs md:max-w-sm">這裡是一片純淨的心靈空間。<br>請先建立您的第一套專屬牌卡，<br>開始記錄每一天的練習與覺察。</p>
+                    <button onclick="switchTab('decks'); showCreateDeck();" class="px-8 py-3.5 border border-gold gold-text rounded-full text-sm tracking-widest uppercase hover:bg-stone-50 transition active:scale-95 shadow-sm">建立專屬牌組</button>
+                `;
+                emptyState.classList.remove('hidden');
+                readyView.classList.add('hidden');
+            } else {
+                let defaultId = localStorage.getItem('lumina_default_deck');
+                if (!defaultId || !decks.find(d => d.id == defaultId)) {
+                    defaultId = decks[0].id;
+                    localStorage.setItem('lumina_default_deck', defaultId);
+                }
+                const deckCards = cards.filter(c => c.deckId == defaultId);
+
+                if (deckCards.length === 0) {
+                    const currentDeck = decks.find(d => d.id == defaultId);
+                    emptyState.innerHTML = `
+                        <div class="text-4xl gold-text mb-5 opacity-60">✧</div>
+                        <h2 class="text-2xl md:text-3xl gold-text italic mb-6">牌組已建立</h2>
+                        <p class="text-sm md:text-base opacity-50 mb-10 leading-loose max-w-xs md:max-w-sm">您的「${currentDeck.title}」目前還是空的。<br>請匯入牌卡圖片，賦予它靈魂。</p>
+                        <button onclick="switchTab('decks'); showDeckDetail(${defaultId});" class="px-8 py-3.5 border border-gold gold-text rounded-full text-sm tracking-widest uppercase hover:bg-stone-50 transition active:scale-95 shadow-sm">前往匯入牌卡</button>
+                    `;
+                    emptyState.classList.remove('hidden');
+                    readyView.classList.add('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                    readyView.classList.remove('hidden');
+                    document.getElementById('current-deck-name-display').innerText = `使用中：${decks.find(d => d.id == defaultId).title}`;
+                }
+            }
         }
 
         function updateSettingsUI() {
@@ -422,8 +559,8 @@
         async function renderDecks() {
             const container = document.getElementById('decks-container');
             const decks = await new Promise(r => db.transaction("decks").objectStore("decks").getAll().onsuccess = e => r(e.target.result));
-            if(decks.length === 0) { container.innerHTML = '<p class="text-center py-10 opacity-20 italic">尚未有任何牌組</p>'; return; }
-            container.innerHTML = decks.map(d => `<div onclick="showDeckDetail(${d.id})" class="p-5 bg-stone-50 rounded-2xl flex justify-between items-center group active:scale-95 transition cursor-pointer hover:bg-stone-100"><div><h4 class="font-bold text-sm mb-1">${d.title}</h4><p class="text-[9px] opacity-30 uppercase tracking-widest">管理內容</p></div><span class="gold-text text-xs opacity-0 group-hover:opacity-100 transition-opacity">→</span></div>`).join('');
+            if(decks.length === 0) { container.innerHTML = '<p class="text-center py-16 opacity-30 italic text-sm md:text-base">尚未建立任何牌組，請點擊右上方新增。</p>'; return; }
+            container.innerHTML = decks.map(d => `<div onclick="showDeckDetail(${d.id})" class="p-6 md:p-8 bg-stone-50 rounded-2xl flex justify-between items-center group active:scale-95 transition cursor-pointer hover:bg-stone-100"><div><h4 class="font-bold text-base md:text-lg mb-2">${d.title}</h4><p class="text-xs opacity-40 uppercase tracking-widest">管理內容</p></div><span class="gold-text text-base md:text-lg opacity-0 group-hover:opacity-100 transition-opacity">→</span></div>`).join('');
         }
 
         function showCreateDeck() {
@@ -461,8 +598,8 @@
             const container = document.getElementById('cards-container');
             const all = await new Promise(r => db.transaction("cards").objectStore("cards").getAll().onsuccess = e => r(e.target.result));
             const cards = all.filter(c => c.deckId === currentDeckId);
-            if(cards.length === 0) { container.innerHTML = '<p class="col-span-2 text-center py-20 opacity-20 italic">此牌組內尚無牌卡</p>'; return; }
-            container.innerHTML = cards.map(c => `<div class="relative aspect-[2/3] gold-border rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition" onclick="editCardItem(${c.id})"><img src="${c.image}" class="w-full h-full object-cover"><div class="absolute bottom-0 w-full bg-white/80 py-2 text-[9px] text-center gold-text font-bold backdrop-blur-sm truncate px-1">${c.name}</div></div>`).join('');
+            if(cards.length === 0) { container.innerHTML = '<p class="col-span-2 text-center py-20 opacity-30 italic text-sm">此牌組內尚無牌卡</p>'; return; }
+            container.innerHTML = cards.map(c => `<div class="relative aspect-[2/3] gold-border rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition group" onclick="editCardItem(${c.id})"><img src="${c.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"><div class="absolute bottom-0 w-full bg-white/90 py-3 md:py-4 text-xs md:text-sm text-center gold-text font-bold backdrop-blur-sm truncate px-2">${c.name}</div></div>`).join('');
         }
 
         async function handleBatchUpload(input) {
@@ -484,7 +621,7 @@
         }
 
         function uploadSingleCard() {
-            openModal("新增單張牌卡", `<input type="text" id="card-name-input" placeholder="牌卡名稱" class="input-gold"><input type="file" id="card-file-input" accept="image/*" class="text-[10px] opacity-40 mt-4 w-full">`, async () => {
+            openModal("新增單張牌卡", `<input type="text" id="card-name-input" placeholder="牌卡名稱" class="input-gold"><input type="file" id="card-file-input" accept="image/*" class="text-xs opacity-50 mt-6 w-full p-2 border border-stone-100 rounded-lg">`, async () => {
                 const name = document.getElementById('card-name-input').value, file = document.getElementById('card-file-input').files[0];
                 if(!name || !file) return;
                 const reader = new FileReader();
@@ -499,7 +636,7 @@
 
         async function editCardItem(id) {
             const card = await new Promise(r => db.transaction("cards").objectStore("cards").get(id).onsuccess = e => r(e.target.result));
-            openModal("編輯牌卡", `<div class="flex flex-col items-center"><img src="${card.image}" class="w-20 h-30 object-cover rounded mb-4 gold-border"><input type="text" id="edit-card-name" value="${card.name}" class="input-gold"><button onclick="deleteCardItem(${id})" class="mt-6 text-[9px] text-red-300 opacity-50 uppercase underline hover:opacity-100 transition">移除此張牌卡</button></div>`, async () => {
+            openModal("編輯牌卡", `<div class="flex flex-col items-center"><img src="${card.image}" class="w-24 h-36 md:w-32 md:h-48 object-cover rounded-xl mb-6 gold-border shadow-md"><input type="text" id="edit-card-name" value="${card.name}" class="input-gold"><button onclick="deleteCardItem(${id})" class="mt-8 text-xs text-red-400 opacity-60 uppercase underline hover:opacity-100 transition p-2">移除此張牌卡</button></div>`, async () => {
                 const newName = document.getElementById('edit-card-name').value;
                 const tx = db.transaction("cards", "readwrite");
                 tx.objectStore("cards").put({ ...card, name: newName });
@@ -522,7 +659,7 @@
                 if(!newTitle) return;
                 const tx = db.transaction("decks", "readwrite");
                 tx.objectStore("decks").put({ ...deck, title: newTitle });
-                tx.oncomplete = () => { document.getElementById('current-deck-title').innerText = newTitle; updateDrawHeader(); closeModal(); };
+                tx.oncomplete = () => { document.getElementById('current-deck-title').innerText = newTitle; updateDrawView(); closeModal(); };
             });
         }
 
@@ -543,35 +680,29 @@
         // --- 5. Draw Logic ---
         async function showDeckSwitcher() {
             const decks = await new Promise(r => db.transaction("decks").objectStore("decks").getAll().onsuccess = e => r(e.target.result));
-            if(decks.length === 0) return alert("請先建立牌組！");
-            openModal("切換使用牌組", `<div class="space-y-2 w-full max-h-[50vh] overflow-y-auto pr-2">${decks.map(d => `<button onclick="setDefaultDeck(${d.id})" class="w-full py-3 border border-stone-100 rounded-xl text-xs hover:border-gold hover:text-gold transition">${d.title}</button>`).join('')}</div>`, null);
+            openModal("切換使用牌組", `<div class="space-y-3 w-full max-h-[50vh] overflow-y-auto pr-2">${decks.map(d => `<button onclick="setDefaultDeck(${d.id})" class="w-full py-4 border border-stone-100 rounded-xl text-sm hover:border-gold hover:text-gold transition active:scale-95">${d.title}</button>`).join('')}</div>`, null);
         }
-        function setDefaultDeck(id) { localStorage.setItem('lumina_default_deck', id); updateDrawHeader(); closeModal(); }
+        function setDefaultDeck(id) { localStorage.setItem('lumina_default_deck', id); updateDrawView(); closeModal(); }
 
         async function startDrawRitual() {
             const deckId = localStorage.getItem('lumina_default_deck');
-            if(!deckId) return alert("請先在牌組庫建立牌卡！");
             const all = await new Promise(r => db.transaction("cards").objectStore("cards").getAll().onsuccess = e => r(e.target.result));
             const deckCards = all.filter(c => c.deckId == deckId);
-            if(deckCards.length === 0) return alert("此牌組內尚未新增照片喔！");
-            
             activeCard = deckCards[Math.floor(Math.random() * deckCards.length)];
             prepareRecordView(true);
         }
 
         async function openManualSelectModal() {
             const deckId = localStorage.getItem('lumina_default_deck');
-            if(!deckId) return alert("請先建立牌組！");
             const all = await new Promise(r => db.transaction("cards").objectStore("cards").getAll().onsuccess = e => r(e.target.result));
             const deckCards = all.filter(c => c.deckId == deckId);
-            if(deckCards.length === 0) return alert("此牌組內尚未新增照片喔！");
             
             const gridHtml = `
-                <div class="grid grid-cols-3 gap-3 max-h-[60vh] overflow-y-auto p-1 w-full">
+                <div class="grid grid-cols-3 md:grid-cols-4 gap-4 max-h-[60vh] overflow-y-auto p-1 w-full">
                     ${deckCards.map(c => `
-                        <div onclick='selectManualCard(${JSON.stringify(c).replace(/'/g, "&apos;")})' class="cursor-pointer hover:opacity-80 transition active:scale-95">
-                            <img src="${c.image}" class="w-full aspect-[2/3] object-cover rounded-lg gold-border shadow-sm">
-                            <p class="text-[8px] text-center mt-1 truncate gold-text">${c.name}</p>
+                        <div onclick='selectManualCard(${JSON.stringify(c).replace(/'/g, "&apos;")})' class="cursor-pointer hover:opacity-80 transition active:scale-95 flex flex-col items-center">
+                            <img src="${c.image}" class="w-full aspect-[2/3] object-cover rounded-lg gold-border shadow-sm mb-2">
+                            <p class="text-[10px] md:text-xs text-center truncate gold-text w-full px-1">${c.name}</p>
                         </div>
                     `).join('')}
                 </div>`;
@@ -591,10 +722,10 @@
             document.getElementById('tag-input').value = "";
             document.getElementById('ai-response').innerText = "";
             
-            // 重置滑桿到 200 勇氣 (index 8)
             document.getElementById('hawkins-slider').value = 8;
             updateHawkinsDisplay();
             
+            document.getElementById('draw-empty-state').classList.add('hidden');
             document.getElementById('draw-ready-view').classList.add('hidden');
             document.getElementById('active-draw-area').classList.remove('hidden');
             
@@ -620,24 +751,19 @@
         }
 
         function cancelDraw() { 
-            editingJournalId = null;
-            document.getElementById('draw-ready-view').classList.remove('hidden'); 
-            document.getElementById('active-draw-area').classList.add('hidden'); 
-            document.getElementById('main-card').classList.remove('is-flipped');
-            document.getElementById('journal-form').classList.add('opacity-0', 'translate-y-4');
+            updateDrawView();
         }
 
-        // --- 6. Hawkins Storage & History ---
         async function saveEntry() {
             const content = document.getElementById('diary-text').value;
             const tagVal = document.getElementById('tag-input').value;
-            if(!content) return alert("請寫下你的靈感或感悟");
+            if(!content) return alert("請寫下你抽到的牌卡和感悟");
             
             const now = new Date();
             const tags = tagVal.split(/[\s,，]+/).filter(t => t.trim() !== "");
             
             const entry = {
-                id: editingJournalId || Date.now(), 
+                id: Date.now(), 
                 cardName: activeCard.name, 
                 cardImg: activeCard.image,
                 content: content, 
@@ -650,23 +776,28 @@
             };
             
             const history = JSON.parse(localStorage.getItem('lumina_history') || '[]');
-            if(editingJournalId) {
-                const idx = history.findIndex(h => h.id === editingJournalId);
-                if(idx !== -1) history[idx] = entry;
-                editingJournalId = null;
-            } else { history.unshift(entry); }
-            
+            history.unshift(entry);
             localStorage.setItem('lumina_history', JSON.stringify(history));
-            alert("感悟已儲存。");
-            cancelDraw();
-            switchTab('history');
+            
+            openModal("儲存成功", "<p class='text-center text-sm opacity-60'>感悟已安放於時間的長河中。</p>", () => {
+                cancelDraw();
+                switchTab('history');
+                closeModal();
+            });
         }
 
+        // --- 6. History Management ---
         function renderHistory() {
             const history = JSON.parse(localStorage.getItem('lumina_history') || '[]');
             const list = document.getElementById('history-list');
             const cloud = document.getElementById('tag-cloud');
             
+            if(history.length === 0) { 
+                cloud.innerHTML = '';
+                list.innerHTML = '<p class="text-center py-20 opacity-30 italic text-sm md:text-base">尚無相關紀錄，請先前往今日抽牌。</p>'; 
+                return; 
+            }
+
             const moonsMap = {};
             const tagCounts = {};
             history.forEach(h => {
@@ -680,27 +811,27 @@
             let cloudHtml = `<button onclick="filterBy('All', 'All')" class="tag-filter whitespace-nowrap flex-shrink-0 ${currentFilter.type==='All'?'active':''} hover:bg-gold hover:text-white transition">全部紀錄</button>`;
             
             if (availableMoons.length > 0) {
-                cloudHtml += `<div class="w-px h-3 bg-stone-200 flex-shrink-0 mx-1"></div>`;
+                cloudHtml += `<div class="w-px h-4 bg-stone-200 flex-shrink-0 mx-2"></div>`;
                 cloudHtml += availableMoons.map(m => `<button onclick="filterBy('moon', '${m}')" class="tag-filter whitespace-nowrap flex-shrink-0 ${currentFilter.type==='moon' && currentFilter.value===m ?'active':''} hover:bg-gold hover:text-white transition">${moonsMap[m]} ${m}</button>`).join('');
             }
             if (topTags.length > 0) {
-                cloudHtml += `<div class="w-px h-3 bg-stone-200 flex-shrink-0 mx-1"></div>`;
+                cloudHtml += `<div class="w-px h-4 bg-stone-200 flex-shrink-0 mx-2"></div>`;
                 cloudHtml += topTags.map(t => `<button onclick="filterBy('tag', '${t}')" class="tag-filter whitespace-nowrap flex-shrink-0 ${currentFilter.type==='tag' && currentFilter.value===t ?'active':''} hover:bg-gold hover:text-white transition">#${t}</button>`).join('');
             }
             
-            cloud.innerHTML = `<p class="text-[8px] opacity-30 tracking-widest mb-3 uppercase text-center w-full">洞察篩選器</p><div class="filter-scroll-container">${cloudHtml}</div>`;
+            cloud.innerHTML = `<p class="text-[10px] md:text-xs opacity-40 tracking-widest mb-4 uppercase text-center w-full">洞察篩選器</p><div class="filter-scroll-container">${cloudHtml}</div>`;
 
             const filtered = currentFilter.type === 'All' ? history :
                              currentFilter.type === 'moon' ? history.filter(h => h.lunar && h.lunar.n === currentFilter.value) :
                              history.filter(h => (h.tags || []).includes(currentFilter.value));
 
-            if(filtered.length === 0) { list.innerHTML = '<p class="text-center py-20 opacity-20 italic">尚無相關紀錄</p>'; return; }
+            if(filtered.length === 0) { list.innerHTML = '<p class="text-center py-20 opacity-30 italic text-sm">此標籤下無紀錄</p>'; return; }
             
             list.innerHTML = filtered.map(h => {
                 const natureInfo = [(h.lunar ? `${h.lunar.i} ${h.lunar.n}` : ""), (h.solar ? `✧ ${h.solar}` : "")].filter(Boolean).join(" ");
                 
                 let auraImgClass = "border-stone-200";
-                let auraRowClass = "border-stone-100 pl-4";
+                let auraRowClass = "border-stone-100 pl-5";
                 let textClass = "gold-text";
 
                 if (h.hawkins.v < 200) {
@@ -708,35 +839,40 @@
                     textClass = "text-stone-400";
                 } else if (h.hawkins.v >= 500) {
                     auraImgClass = "border-gold"; 
-                    auraRowClass = "aura-high-row pl-3"; 
+                    auraRowClass = "aura-high-row pl-4"; 
                     textClass = "gold-text";
                 }
 
                 return `
-                <div class="flex space-x-4 relative animate-fade-in border-l ${auraRowClass} py-2 pr-2">
+                <div class="flex space-x-5 md:space-x-8 relative animate-fade-in border-l ${auraRowClass} py-3 pr-2">
                     
-                    <div class="w-16 flex-shrink-0 flex flex-col items-center">
-                        <img src="${h.cardImg}" class="w-full h-24 object-cover rounded-lg border transition-all duration-500 shadow-sm ${auraImgClass}">
-                        <span class="${textClass} text-[9px] font-bold mt-2 text-center leading-tight w-full break-words">${h.cardName}</span>
+                    <div class="w-20 md:w-28 flex-shrink-0 flex flex-col items-center">
+                        <img src="${h.cardImg}" class="w-full aspect-[2/3] object-cover rounded-lg border transition-all duration-500 shadow-sm ${auraImgClass}">
+                        <span class="${textClass} text-[10px] md:text-xs font-bold mt-3 text-center leading-tight w-full break-words tracking-wide">${h.cardName}</span>
                     </div>
 
                     <div class="flex-grow pt-1">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex flex-col text-[9px] opacity-40 space-y-0.5">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex flex-col text-[10px] md:text-xs opacity-50 space-y-1">
                                 <span>${h.date}</span>
                                 <span>${natureInfo}</span>
                             </div>
-                            <button onclick="editJournalEntry(${h.id})" class="text-[11px] opacity-20 hover:opacity-100 hover:text-gold transition px-1 cursor-pointer" title="編輯紀錄">✎</button>
+                            
+                            <div class="flex space-x-3 -mt-1 -mr-1">
+                                <button onclick="editJournalEntry(${h.id})" class="text-xs md:text-sm opacity-30 hover:opacity-100 hover:text-gold transition p-1 cursor-pointer" title="編輯紀錄">✎ 修改</button>
+                                <button onclick="deleteJournalEntry(${h.id})" class="text-xs md:text-sm opacity-30 hover:opacity-100 hover:text-red-400 transition p-1 cursor-pointer" title="刪除紀錄">× 刪除</button>
+                            </div>
                         </div>
                         
-                        <p class="text-[9px] opacity-50 tracking-widest mb-1.5 flex items-center">
-                            <span class="mr-1 opacity-70">能量:</span> 
+                        <p class="text-[11px] md:text-xs opacity-60 tracking-widest mb-3 flex items-center">
+                            <span class="mr-2 opacity-70">能量:</span> 
                             <span class="${textClass} font-bold">${h.hawkins.v} ${h.hawkins.l}</span>
                         </p>
                         
-                        <p class="text-xs text-stone-600 leading-relaxed mb-2">${h.content}</p>
-                        <div class="mb-2">${(h.tags || []).map(t => `<span class="tag-chip">#${t}</span>`).join('')}</div>
-                        ${h.ai ? `<div class="bg-stone-50 p-2 rounded text-[9px] italic text-stone-400 mb-1 leading-relaxed">AI 導師：${h.ai}</div>` : ''}
+                        <p class="text-sm md:text-base text-stone-700 leading-loose mb-4">${h.content}</p>
+                        
+                        <div class="mb-3">${(h.tags || []).map(t => `<span class="tag-chip">#${t}</span>`).join('')}</div>
+                        ${h.ai ? `<div class="bg-stone-50 p-4 rounded-xl text-xs md:text-sm italic text-stone-500 mb-1 leading-loose">AI 導師：${h.ai}</div>` : ''}
                     </div>
                 </div>
                 `;
@@ -745,30 +881,63 @@
 
         function filterBy(type, value) { currentFilter = { type, value }; renderHistory(); }
 
-        async function editJournalEntry(id) {
+        function editJournalEntry(id) {
             const history = JSON.parse(localStorage.getItem('lumina_history') || '[]');
             const entry = history.find(h => h.id === id);
-            editingJournalId = id; 
-            activeCard = { name: entry.cardName, image: entry.cardImg };
+            currentEditId = id; 
             
-            document.getElementById('diary-text').value = entry.content;
-            document.getElementById('tag-input').value = (entry.tags || []).join(' ');
-            document.getElementById('drawn-img').src = entry.cardImg;
-            document.getElementById('drawn-name').innerText = entry.cardName;
-            document.getElementById('ai-response').innerText = entry.ai || "";
+            document.getElementById('edit-card-img').src = entry.cardImg;
+            document.getElementById('edit-card-name').innerText = entry.cardName;
+            document.getElementById('edit-diary-text').value = entry.content;
+            document.getElementById('edit-tag-input').value = (entry.tags || []).join(' ');
             
             let sIdx = hawkinsScale.findIndex(x => x.v === entry.hawkins.v);
-            document.getElementById('hawkins-slider').value = sIdx !== -1 ? sIdx : 8;
-            updateHawkinsDisplay();
+            document.getElementById('edit-hawkins-slider').value = sIdx !== -1 ? sIdx : 8;
+            updateEditHawkinsDisplay();
             
-            switchTab('draw');
-            document.getElementById('draw-ready-view').classList.add('hidden');
-            document.getElementById('active-draw-area').classList.remove('hidden');
-            document.getElementById('main-card').classList.add('is-flipped');
-            document.getElementById('journal-form').classList.remove('opacity-0', 'translate-y-4');
+            document.getElementById('history-main-view').classList.add('hidden');
+            document.getElementById('history-edit-view').classList.remove('hidden');
+            document.getElementById('history-edit-view').classList.add('flex');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- 7. AI & Modals (with Custom Key Check) ---
+        function cancelEditHistory() {
+            currentEditId = null;
+            document.getElementById('history-edit-view').classList.add('hidden');
+            document.getElementById('history-edit-view').classList.remove('flex');
+            document.getElementById('history-main-view').classList.remove('hidden');
+        }
+
+        function saveEditHistory() {
+            const content = document.getElementById('edit-diary-text').value;
+            const tagVal = document.getElementById('edit-tag-input').value;
+            if(!content) return alert("請寫下你抽到的牌卡和感悟");
+            
+            const history = JSON.parse(localStorage.getItem('lumina_history') || '[]');
+            const idx = history.findIndex(h => h.id === currentEditId);
+            
+            if (idx !== -1) {
+                history[idx].content = content;
+                history[idx].tags = tagVal.split(/[\s,，]+/).filter(t => t.trim() !== "");
+                history[idx].hawkins = activeEditHawkins;
+                localStorage.setItem('lumina_history', JSON.stringify(history));
+                
+                cancelEditHistory();
+                renderHistory();
+            }
+        }
+
+        function deleteJournalEntry(id) {
+            openModal("刪除紀錄", "<p class='text-center text-sm opacity-60'>確定要將這份紀錄刪除嗎？<br>此操作無法復原。</p>", () => {
+                let history = JSON.parse(localStorage.getItem('lumina_history') || '[]');
+                history = history.filter(h => h.id !== id);
+                localStorage.setItem('lumina_history', JSON.stringify(history));
+                renderHistory();
+                closeModal();
+            });
+        }
+
+        // --- 7. AI & Modals ---
         async function askAI() {
             if (!userApiKey) {
                 alert("宇宙的聯繫需要一把鑰匙。\n\n請先前往「設定」頁面，輸入您的 Gemini API Key 來喚醒 AI 導師。");
@@ -783,9 +952,7 @@
                     method:'POST', body: JSON.stringify({contents:[{parts:[{text:`你是一位優雅的心靈導師。使用者在霍金斯能量層級 ${activeHawkins.v} (${activeHawkins.l}) 的狀態下抽到了「${activeCard.name}」。請給一段約 60 字的溫暖啟發。`}]}]})
                 });
                 
-                if (!res.ok) {
-                    throw new Error("API Key 無效或額度已滿");
-                }
+                if (!res.ok) throw new Error("API Error");
 
                 const data = await res.json();
                 box.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "聆聽你的直覺，當下即是答案。";
@@ -794,11 +961,17 @@
             }
         }
 
+        // 修改後的彈窗系統，能確保按鈕文字在每次呼叫後重置
         function openModal(title, content, confirmFn) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-content').innerHTML = content;
             const confirmBtn = document.getElementById('modal-confirm');
             const cancelBtn = document.getElementById('modal-cancel');
+            
+            // 重置為預設文字
+            confirmBtn.innerText = "確定";
+            cancelBtn.innerText = "關閉";
+            cancelBtn.onclick = closeModal;
             
             if (confirmFn) {
                 confirmBtn.onclick = confirmFn;
@@ -806,7 +979,6 @@
                 cancelBtn.innerText = "取消";
             } else {
                 confirmBtn.classList.add('hidden');
-                cancelBtn.innerText = "關閉";
             }
             document.getElementById('modal-overlay').classList.remove('hidden');
         }
@@ -838,6 +1010,10 @@
             const history = JSON.parse(localStorage.getItem('lumina_history') || '[]');
             const blob = new Blob([JSON.stringify({ decks, cards, history })], { type: "application/json" });
             const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `lumina_journey_backup_${Date.now()}.json`; a.click();
+            
+            // 【新增】每次成功備份後，重置守護提醒的計算時間
+            localStorage.setItem('lumina_last_backup', Date.now());
+            
             showLoading(false);
         }
 
@@ -867,6 +1043,5 @@
     </script>
 </body>
 </html>
-
 
 
