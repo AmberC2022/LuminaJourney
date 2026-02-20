@@ -306,6 +306,17 @@
                 <button onclick="document.getElementById('import-full-file').click()" class="text-xs md:text-sm opacity-40 underline uppercase block w-full hover:opacity-80 transition p-2">還原資料庫</button>
                 <input type="file" id="import-full-file" class="hidden" accept=".json" onchange="importFullData(this)">
             </div>
+            <!-- 關於與贊助區塊 -->
+            <div class="mt-12 p-8 border border-stone-100 rounded-2xl text-center relative overflow-hidden bg-white">
+                <div class="absolute -top-4 -right-4 text-8xl gold-text opacity-5 select-none">✧</div>
+                <h4 class="text-sm md:text-base font-bold gold-text tracking-widest mb-4">關於 Lumina Journey</h4>
+                <p class="text-xs md:text-sm text-stone-500 leading-loose text-left mb-6 relative z-10">
+                    這個空間的誕生，源於一個簡單的願望：在喧囂的數位世界中，保留一處 100% 隱私、純淨且充滿美感的角落。讓每一次的抽牌與覺察，都能被溫柔地接納與記錄。<br><br>如果您喜歡這裡的寧靜，歡迎支持開發者，讓這段光之旅程能走得更遠。
+                </p>
+                <a href="#" target="_blank" class="inline-block w-full py-4 border border-gold gold-text rounded-full text-xs md:text-sm tracking-widest uppercase hover:bg-gold hover:text-white transition relative z-10">
+                    ☕️ 支持開發者
+                </a>
+            </div>
         </section>
 
     </main>
@@ -505,7 +516,9 @@
                 emptyState.innerHTML = `
                     <div class="text-4xl gold-text mb-5 opacity-60">✧</div>
                     <h2 class="text-2xl md:text-3xl gold-text italic mb-6 tracking-wide">歡迎來到 Lumina Journey</h2>
-                    <p class="text-sm md:text-base opacity-50 mb-10 leading-loose max-w-xs md:max-w-sm">這裡是一片純淨的心靈空間。<br>請先建立您的第一套專屬牌卡，<br>開始記錄每一天的練習與覺察。</p>
+                    <p class="text-sm md:text-base opacity-50 mb-10 leading-loose max-w-xs md:max-w-sm">在每一次掀開卡片的瞬間，聽見內在幽微的聲響。<br><br>
+                        請先建立您的第一套牌卡，<br>
+                        讓它陪您收集日常的微光，溫柔覺察情緒的潮汐。</p>
                     <button onclick="switchTab('decks'); showCreateDeck();" class="px-8 py-3.5 border border-gold gold-text rounded-full text-sm tracking-widest uppercase hover:bg-stone-50 transition active:scale-95 shadow-sm">建立專屬牌組</button>
                 `;
                 emptyState.classList.remove('hidden');
