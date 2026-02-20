@@ -229,7 +229,21 @@
         <!-- === 設定區 === -->
         <section id="tab-settings" class="hidden page-transition space-y-6">
             <h3 class="text-xs gold-text font-bold tracking-widest uppercase mb-4">偏好設定</h3>
-            <div class="flex items-center justify-between p-4 bg-stone-50 rounded-xl">
+            
+            <!-- 【新增：AI 金鑰輸入區】 -->
+            <div class="flex flex-col p-4 bg-stone-50 rounded-xl space-y-3">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold">AI 導師金鑰 (API Key)</span>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[9px] gold-text underline">免費獲取</a>
+                </div>
+                <p class="text-[9px] opacity-50 leading-relaxed">請輸入你的專屬 Gemini API Key 以啟用智能解讀功能。金鑰將安全地儲存在你的本機裝置中。</p>
+                <div class="flex items-center space-x-2 mt-2">
+                    <input type="password" id="api-key-setting" class="flex-grow bg-white border border-stone-200 rounded p-2 text-[10px] outline-none focus:border-gold" placeholder="輸入金鑰 (AIzaSy...)">
+                    <button onclick="saveApiKeySetting()" class="gold-bg text-white px-3 py-2 rounded text-[10px] whitespace-nowrap hover:opacity-90 transition">儲存</button>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-stone-50 rounded-xl mt-4">
                 <span class="text-xs font-bold">紀錄當前月相</span>
                 <div onclick="toggleSetting('showLunar')" id="set-lunar" class="toggle-switch cursor-pointer"><div class="toggle-knob"></div></div>
             </div>
@@ -309,10 +323,12 @@
             return solarTerms[23];
         }
 
-        // --- 2. State & DB ---
+        // --- 2. State, DB & API Key ---
         let db, currentDeckId = null, activeCard = null, currentFilter = { type: 'All', value: 'All' }, editingJournalId = null;
         let settings = JSON.parse(localStorage.getItem('lumina_settings') || '{"showLunar":true,"showSolar":true}');
-        const apiKey = ""; 
+        
+        // 讀取存在本地的 API Key
+        let userApiKey = localStorage.getItem('lumina_api_key') || "";
 
         const request = indexedDB.open("LuminaJourneyDB_v1", 1);
         request.onupgradeneeded = e => {
@@ -323,11 +339,21 @@
         request.onsuccess = e => { db = e.target.result; init(); };
 
         async function init() {
+            // 初始化 API Key 欄位
+            if(userApiKey) document.getElementById('api-key-setting').value = userApiKey;
+            
             await ensureDefaultDeck();
             renderDecks();
             updateSettingsUI();
             updateNatureIndicator();
             switchTab('draw');
+        }
+
+        function saveApiKeySetting() {
+            const key = document.getElementById('api-key-setting').value.trim();
+            localStorage.setItem('lumina_api_key', key);
+            userApiKey = key;
+            alert("API 金鑰已安全儲存於本機。");
         }
 
         async function ensureDefaultDeck() {
@@ -340,7 +366,7 @@
             }
         }
 
-        // --- 3. UI Navigation & App Title ---
+        // --- 3. UI Navigation ---
         function switchTab(t) {
             document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
             document.querySelectorAll('nav > button').forEach(b => b.classList.remove('active'));
@@ -680,13 +706,11 @@
                 return `
                 <div class="flex space-x-4 relative animate-fade-in border-l ${auraRowClass} py-2 pr-2">
                     
-                    <!-- 【更新】左側：實體牌卡視覺區 (圖片 + 牌卡名稱) -->
                     <div class="w-16 flex-shrink-0 flex flex-col items-center">
                         <img src="${h.cardImg}" class="w-full h-24 object-cover rounded-lg border transition-all duration-500 shadow-sm ${auraImgClass}">
                         <span class="${textClass} text-[9px] font-bold mt-2 text-center leading-tight w-full break-words">${h.cardName}</span>
                     </div>
 
-                    <!-- 右側：文字與心靈區 -->
                     <div class="flex-grow pt-1">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex flex-col text-[9px] opacity-40 space-y-0.5">
@@ -735,17 +759,30 @@
             document.getElementById('journal-form').classList.remove('opacity-0', 'translate-y-4');
         }
 
-        // --- 7. AI & Modals ---
+        // --- 7. AI & Modals (with Custom Key Check) ---
         async function askAI() {
+            if (!userApiKey) {
+                alert("宇宙的聯繫需要一把鑰匙。\n\n請先前往「設定」頁面，輸入您的 Gemini API Key 來喚醒 AI 導師。");
+                switchTab('settings');
+                return;
+            }
+
             const box = document.getElementById('ai-response'); 
             box.innerText = "正在感應星辰...";
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${userApiKey}`, {
                     method:'POST', body: JSON.stringify({contents:[{parts:[{text:`你是一位優雅的心靈導師。使用者在霍金斯能量層級 ${activeHawkins.v} (${activeHawkins.l}) 的狀態下抽到了「${activeCard.name}」。請給一段約 60 字的溫暖啟發。`}]}]})
                 });
+                
+                if (!res.ok) {
+                    throw new Error("API Key 無效或額度已滿");
+                }
+
                 const data = await res.json();
                 box.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "聆聽你的直覺，當下即是答案。";
-            } catch { box.innerText = "宇宙暫時靜默，請相信你內心的聲音。"; }
+            } catch(e) { 
+                box.innerText = "宇宙暫時靜默，請確認您的 API Key 是否正確。"; 
+            }
         }
 
         function openModal(title, content, confirmFn) {
@@ -821,6 +858,5 @@
     </script>
 </body>
 </html>
-
 
 
